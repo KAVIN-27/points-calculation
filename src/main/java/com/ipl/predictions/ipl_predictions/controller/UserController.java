@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 public class UserController {
@@ -36,6 +38,13 @@ public class UserController {
         User user =mapper.mapTo(userEntity);
         return new ResponseEntity<>(user,HttpStatus.OK);
         } ).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
+    }
+
+    @GetMapping(path = "user")
+    public List<User> getAllPredctions(){
+        List<UserEntity> predictions= service.findAllUsers();
+        return predictions.stream().map(mapper::mapTo).collect(Collectors.toList());
 
     }
 

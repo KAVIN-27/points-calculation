@@ -24,4 +24,5 @@ public class TournamentEntity {
     private String orangeCap;
     private String purpleCap;
     private String emergingPlayer;
+    private String MostValuablePlayer;
 }

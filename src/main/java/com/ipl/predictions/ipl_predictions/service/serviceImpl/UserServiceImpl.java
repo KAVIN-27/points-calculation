@@ -5,6 +5,7 @@ import com.ipl.predictions.ipl_predictions.repository.UserPredictionRepository;
 import com.ipl.predictions.ipl_predictions.service.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,5 +24,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<UserEntity> findUser(String username) {
         return repository.findByUsername(username);
+    }
+
+    @Override
+    public List<UserEntity> findAllUsers() {
+        return repository.findAll();
     }
 }

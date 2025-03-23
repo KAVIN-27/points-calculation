@@ -18,5 +18,8 @@ public class User {
     private String orangeCap;
     private String purpleCap;
     private String emergingPlayer;
+    private String MostValuablePlayer;
+
     private int points;
+
 }

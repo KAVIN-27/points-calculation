@@ -2,6 +2,7 @@ package com.ipl.predictions.ipl_predictions.service;
 
 import com.ipl.predictions.ipl_predictions.domain.UserEntity;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
@@ -11,4 +12,5 @@ public interface UserService {
 
     Optional<UserEntity> findUser(String username);
 
+    List<UserEntity> findAllUsers();
 }
