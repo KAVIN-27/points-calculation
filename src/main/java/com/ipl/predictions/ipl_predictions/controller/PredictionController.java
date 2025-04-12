@@ -23,6 +23,7 @@ public class PredictionController {
         this.mapper = mapper;
     }
 
+    //to submit the final result
     @PostMapping("result/submit")
     public ResponseEntity<Tournament> postResult(@RequestBody Tournament tournament){
         TournamentEntity tournamentEntity = mapper.mapFrom(tournament);
@@ -30,6 +31,7 @@ public class PredictionController {
         return new ResponseEntity<>(mapper.mapTo(savedTournamentEntity), HttpStatus.CREATED);
     }
 
+    // to get the final result
     @GetMapping("result")
     public ResponseEntity<Tournament> getResult(){
         TournamentEntity foundResult = service.findAll();

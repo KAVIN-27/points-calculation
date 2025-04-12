@@ -1,5 +1,6 @@
 package com.ipl.predictions.ipl_predictions.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ipl.predictions.ipl_predictions.DTO.User;
 import com.ipl.predictions.ipl_predictions.domain.UserEntity;
 import com.ipl.predictions.ipl_predictions.mapper.Mapper;
@@ -17,10 +18,12 @@ public class UserController {
 
     private UserService service;
     private Mapper<UserEntity,User> mapper;
+    private ObjectMapper objectMapper;
 
-    public UserController(Mapper<UserEntity, User> mapper, UserService service) {
+    public UserController(Mapper<UserEntity, User> mapper, UserService service,ObjectMapper objectMapper) {
         this.mapper = mapper;
         this.service = service;
+        this.objectMapper = objectMapper;
     }
 
     @PostMapping(path = "user/submit")
@@ -30,6 +33,7 @@ public class UserController {
         return new ResponseEntity<>(mapper.mapTo(savedUserEntity), HttpStatus.CREATED);
     }
 
+    //to get a prediction of a particular user
     @GetMapping(path = "user/{username}")
     public ResponseEntity<User> getUserPredictions(@PathVariable("username") String username){
         Optional<UserEntity> foundUser = service.findUser(username);
@@ -41,13 +45,57 @@ public class UserController {
 
     }
 
+
+    // to get the all users and their predictions
     @GetMapping(path = "user")
-    public List<User> getAllPredctions(){
+    public List<User> getAllPredictions(){
         List<UserEntity> predictions= service.findAllUsers();
         return predictions.stream().map(mapper::mapTo).collect(Collectors.toList());
 
     }
 
+//    @PatchMapping(path = "user/{username}")
+//    public ResponseEntity<User> modifyUser(@PathVariable String username, @RequestBody Map<User,Object> patchPayLoad) {
+//
+//        UserEntity userEntity = service.findUser(username)
+//                .orElseThrow(() -> new RuntimeException("User not found"));
+//        User userDto = mapper.mapTo(userEntity);
+//
+//        User patchedDto = applyPatch(patchPayLoad,userDto);
+//
+//        UserEntity patchedEntity = mapper.mapFrom(patchedDto);
+//
+//        UserEntity save = service.save(patchedEntity);
+//
+//        return ResponseEntity.ok(mapper.mapTo(save) );
+//
+//    }
+//
+//    private User applyPatch(Map<User, Object> patchPayLoad, User userDto) {
+//
+//        ObjectNode dtoNode = objectMapper.convertValue(userDto, ObjectNode.class);
+//
+//        ObjectNode patchNode = objectMapper.convertValue(patchPayLoad,ObjectNode.class);
+//
+//        dtoNode.setAll(patchNode);
+//
+//        return objectMapper.convertValue(dtoNode,User.class);
+//
+//    }
+
+    @DeleteMapping(path = "user/{username}")
+    public String deleteUser(@PathVariable String username){
+
+        UserEntity user = service.findUser(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Long userId = user.getId();
+
+        service.deleteById(userId);
+
+        return "Deleted the user - "+username;
+
+    }
 
 
 }
